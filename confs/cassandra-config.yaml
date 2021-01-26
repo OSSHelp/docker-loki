@@ -1,0 +1,71 @@
+---
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+
+ingester:
+  lifecycler:
+    address: 127.0.0.1
+    ring:
+      kvstore:
+        store: inmemory
+      replication_factor: 1
+    final_sleep: 0s
+  chunk_idle_period: 5m
+  chunk_retain_period: 30s
+  max_transfer_retries: 1
+
+schema_config:
+  configs:
+    - from: 2020-01-01
+      store: cassandra
+      object_store: cassandra
+      schema: v11
+      index:
+        prefix: index_
+        period: 168h
+      chunks:
+        prefix: chunk_
+        period: 168h
+
+storage_config:
+  cassandra:
+    addresses: CASSANDRA_HOSTS
+    keyspace: CASSANDRA_KEYSPACE
+  # index_queries_cache_config:
+  #   enable_fifocache: true
+  #   background:
+  #     writeback_goroutines: 10
+  #     writeback_buffer: 10000
+  #   memcached:
+  #     expiration: 30m
+  #     batch_size: 1024
+  #   memcached_client:
+  #     host: MEMCACHED_HOST
+  #     service: MEMCACHED_HOST
+  #   fifocache:
+  #     size: 0
+  #     validity: 0s
+
+limits_config:
+  enforce_metric_name: false
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h
+
+chunk_store_config:
+  max_look_back_period: 0
+
+table_manager:
+  chunk_tables_provisioning:
+    inactive_read_throughput: 0
+    inactive_write_throughput: 0
+    provisioned_read_throughput: 0
+    provisioned_write_throughput: 0
+  index_tables_provisioning:
+    inactive_read_throughput: 0
+    inactive_write_throughput: 0
+    provisioned_read_throughput: 0
+    provisioned_write_throughput: 0
+  retention_deletes_enabled: false
+  retention_period: 0
