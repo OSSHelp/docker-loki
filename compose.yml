@@ -1,0 +1,22 @@
+---
+version: "3.7"
+networks:
+  net:
+
+services:
+  scylla:
+    image: scylladb/scylla:4.4.1
+    volumes:
+      - scylla:/var/lib/scylla
+    networks:
+      - net
+
+  loki:
+    image: oss.help/pub/loki:build
+    environment:
+      CASSANDRA_HOSTS: scylla
+    networks:
+      - net
+
+volumes:
+  scylla:

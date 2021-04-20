@@ -1,4 +1,4 @@
-FROM grafana/loki:1.6.1
+FROM grafana/loki:2.2.1
 # hadolint ignore=DL3002
 USER root
 # hadolint ignore=DL3018
